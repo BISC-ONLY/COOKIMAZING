@@ -240,27 +240,44 @@ if (
 
       if (!card || card.dataset.photoFixed === photo.name) continue;
 
+     
+<script>
+(function () {
+  function fixShakeCards() {
+    document.querySelectorAll(".product-photo.fallback").forEach(function (card) {
+      const section = card.closest(".product-card, article");
+      const text = (section || card.parentElement)?.innerText || "";
+
+      let file = "";
+      let name = "";
+
+      if (text.includes("Chocolate Shake") && !text.includes("Oreo Chocolate Shake")) {
+        file = "./Chocolate-Shake.jpg";
+        name = "Chocolate Shake";
+      } else if (text.includes("Vanilla Shake") && !text.includes("Oreo Vanilla Shake")) {
+        file = "./Vannila%20Shake.jpg";
+        name = "Vanilla Shake";
+      }
+
+      if (!file || card.dataset.photoFixed === name) return;
+
       const img = document.createElement("img");
-      img.alt = photo.name;
-      img.src = new URL(photo.file, location.href).href;
-      img.style.cssText =
-        "width:100%;height:100%;object-fit:cover;display:block";
+      img.alt = name;
+      img.src = new URL(file, location.href).href;
+      img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
 
       card.replaceChildren(img);
       card.classList.remove("fallback");
-      card.dataset.photoFixed = photo.name;
-    }
+      card.dataset.photoFixed = name;
+    });
   }
 
   fixShakeCards();
-
-  new MutationObserver(fixShakeCards).observe(
-    document.getElementById("root"),
-    { childList: true, subtree: true }
-  );
+  new MutationObserver(fixShakeCards).observe(document.getElementById("root"), {
+    childList: true,
+    subtree: true
+  });
 })();
 </script>
-</body>
-
 </body>
 </html>
