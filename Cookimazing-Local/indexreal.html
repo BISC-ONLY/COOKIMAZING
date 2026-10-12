@@ -1,87 +1,87 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>COOKIMAZING</title>
-    <meta name="description" content="COOKIMAZING — built on Replit. Update this description to reflect the app." />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="COOKIMAZING" />
-    <meta property="og:description" content="COOKIMAZING — built on Replit. Update this description to reflect the app." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="COOKIMAZING" />
-    <meta name="twitter:description" content="COOKIMAZING — built on Replit. Update this description to reflect the app." />
-    <link rel="icon" type="image/jpeg" href="./favicon.jpeg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>COOKIMAZING</title>
+  <meta name="description" content="COOKIMAZING — School Cookie Store." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="COOKIMAZING" />
+  <meta property="og:description" content="COOKIMAZING — School Cookie Store." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="COOKIMAZING" />
+  <meta name="twitter:description" content="COOKIMAZING — School Cookie Store." />
 
-<style>
-  #intro-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    background: #111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+  <link rel="icon" type="image/jpeg" href="./favicon.jpeg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  #intro-text {
-    color: white;
-    font-family: Inter, sans-serif;
-    font-size: clamp(40px, 8vw, 90px);
-    font-weight: 700;
-    letter-spacing: 6px;
-  }
-
-  .intro-word {
-    display: none;
-  }
-
-  .intro-word.show {
-    display: block;
-    animation: introPop 0.7s ease forwards;
-  }
-
-  @keyframes introPop {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
+  <style>
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    60% {
-      opacity: 1;
-      transform: scale(1.08);
+    #intro-text {
+      color: white;
+      font-family: Inter, sans-serif;
+      font-size: clamp(40px, 8vw, 90px);
+      font-weight: 700;
+      letter-spacing: 6px;
     }
 
-    100% {
-      opacity: 1;
-      transform: scale(1);
+    .intro-word {
+      display: none;
     }
-  }
 
-  #intro-screen.hide {
-    animation: introFadeOut 0.8s ease forwards;
-    pointer-events: none;
-  }
-
-  @keyframes introFadeOut {
-    to {
-      opacity: 0;
-      visibility: hidden;
+    .intro-word.show {
+      display: block;
+      animation: introPop 0.7s ease forwards;
     }
-  }
-  .hero-cta {
-  display: none !important;
-}
-</style>
 
+    @keyframes introPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      60% {
+        opacity: 1;
+        transform: scale(1.08);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    #intro-screen.hide {
+      animation: introFadeOut 0.8s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes introFadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    .hero-cta {
+      display: none !important;
+    }
+  </style>
 </head>
- <body>
 
+<body>
   <div id="root"></div>
 
   <div id="intro-screen">
@@ -92,173 +92,207 @@
     </div>
   </div>
 
-<script src="./assets/index-DXqvEoz6.js?v=5"></script>
+  <script src="./assets/index-DXqvEoz6.js?v=5"></script>
 
   <script>
-  (function () {
+    (function () {
       const screen = document.getElementById("intro-screen");
       const words = document.querySelectorAll(".intro-word");
       let current = 0;
 
       function showNextWord() {
-          if (current > 0) {
-              words[current - 1].classList.remove("show");
-          }
+        if (current > 0) {
+          words[current - 1].classList.remove("show");
+        }
 
-          if (current < words.length) {
-              words[current].classList.add("show");
-              current++;
-              setTimeout(showNextWord, 900);
-          } else {
-              setTimeout(function () {
-                  screen.style.display = "none";
-              }, 500);
-          }
+        if (current < words.length) {
+          words[current].classList.add("show");
+          current++;
+          setTimeout(showNextWord, 900);
+        } else {
+          setTimeout(function () {
+            screen.style.display = "none";
+          }, 500);
+        }
       }
 
       showNextWord();
-  })();
+    })();
   </script>
-  <script>
-(function () {
-    const appFetch = window.fetch.bind(window);
 
-    window.fetch = async function (input, options) {
+  <script>
+    (function () {
+      const appFetch = window.fetch.bind(window);
+
+      window.fetch = async function (input, options) {
         const url =
-            typeof input === "string"
-                ? input
-                : input instanceof URL
-                    ? input.href
-                    : input && input.url;
+          typeof input === "string"
+            ? input
+            : input instanceof URL
+              ? input.href
+              : input && input.url;
 
         if (url) {
-            const apiUrl = new URL(url, location.href);
-            const path = apiUrl.pathname.replace(/^\/[A-Za-z]:/, "");
+          const apiUrl = new URL(url, location.href);
+          const path = apiUrl.pathname.replace(/^\/[A-Za-z]:/, "");
 
-            const requestMethod = (
-                options?.method ||
-                (input instanceof Request ? input.method : "GET")
-            ).toUpperCase();
-if (
-    path === "/api/store/catalog" &&
-    requestMethod === "GET" &&
-    location.protocol === "file:"
-) {
-    apiUrl.protocol = "http:";
-    apiUrl.hostname = "localhost";
-    apiUrl.port = 9999;
-    apiUrl.pathname = path;
+          const requestMethod = (
+            options?.method ||
+            (input instanceof Request ? input.method : "GET")
+          ).toUpperCase();
 
-    const catalogResponse = await appFetch(apiUrl.href, options);
-    const catalog = await catalogResponse.clone().json();
+          if (
+            path === "/api/store/catalog" &&
+            requestMethod === "GET" &&
+            location.protocol === "file:"
+          ) {
+            apiUrl.protocol = "http:";
+            apiUrl.hostname = "localhost";
+            apiUrl.port = 9999;
+            apiUrl.pathname = path;
 
-    const chocolate = catalog.shakes.find(
-        item => item.id === "chocolate-shake"
-    );
+            const catalogResponse = await appFetch(apiUrl.href, options);
+            const catalog = await catalogResponse.clone().json();
 
-    const vanilla = catalog.shakes.find(
-        item => item.id === "vanilla-shake"
-    );
+            const chocolate = catalog.shakes.find(
+              item => item.id === "chocolate-shake"
+            );
 
-    if (chocolate) chocolate.image = "./Chocolate-Shake.jpg";
-    if (vanilla) vanilla.image = "./images/Vannila-Shake.jpg";
-    return new Response(JSON.stringify(catalog), {
-        status: catalogResponse.status,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-}
-            if (
-                path === "/api/orders" &&
-                requestMethod === "POST" &&
-                location.protocol === "file:"
-            ) {
-                apiUrl.protocol = "http:";
-                apiUrl.hostname = "localhost";
-                apiUrl.port = 9999;
-                apiUrl.pathname = path;
+            const vanilla = catalog.shakes.find(
+              item => item.id === "vanilla-shake"
+            );
 
-                const localResponse = await appFetch(apiUrl.href, options);
+            if (chocolate) chocolate.image = "./Chocolate-Shake.jpg";
+            if (vanilla) vanilla.image = "./Vannila%20Shake.jpg";
 
-                try {
-                    if (localResponse.ok) {
-                        const savedOrder =
-                            await localResponse.clone().json();
+            return new Response(JSON.stringify(catalog), {
+              status: catalogResponse.status,
+              headers: {
+                "Content-Type": "application/json"
+              }
+            });
+          }
 
-                        appFetch(
-                            "https://cookimazing-orders.robloxprogamer200.workers.dev/",
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify(savedOrder)
-                            }
-                        ).catch(() => {});
-                    }
-                } catch {}
+          if (
+            path === "/api/orders" &&
+            requestMethod === "POST" &&
+            location.protocol === "file:"
+          ) {
+            apiUrl.protocol = "http:";
+            apiUrl.hostname = "localhost";
+            apiUrl.port = 9999;
+            apiUrl.pathname = path;
 
-                return localResponse;
-            }
+            const localResponse = await appFetch(apiUrl.href, options);
 
-            if (
-                location.protocol === "file:" &&
-                path.startsWith("/api/")
-            ) {
-                apiUrl.protocol = "http:";
-                apiUrl.hostname = "localhost";
-                apiUrl.port = 9999;
-                apiUrl.pathname = path;
+            try {
+              if (localResponse.ok) {
+                const savedOrder = await localResponse.clone().json();
 
-                return appFetch(apiUrl.href, options);
-            }
+                appFetch(
+                  "https://cookimazing-orders.robloxprogamer200.workers.dev/",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(savedOrder)
+                  }
+                ).catch(() => {});
+              }
+            } catch {}
+
+            return localResponse;
+          }
+
+          if (
+            location.protocol === "file:" &&
+            path.startsWith("/api/")
+          ) {
+            apiUrl.protocol = "http:";
+            apiUrl.hostname = "localhost";
+            apiUrl.port = 9999;
+            apiUrl.pathname = path;
+
+            return appFetch(apiUrl.href, options);
+          }
         }
 
         return appFetch(input, options);
-    };
-})();
-</script>
+      };
+    })();
+  </script>
 
-<script>
-(function () {
+  <script>
+    (function () {
+      const imagePaths = {
+        chocolate: "./Chocolate-Shake.jpg",
+        vanilla: "./Vannila%20Shake.jpg"
+      };
 
+      function getProductName(card) {
+        let element = card;
 
-<script>
-(function () {
-  const photos = [
-    "./Chocolate-Shake.jpg",
-    "./Vannila%20Shake.jpg"
-  ];
+        for (let i = 0; i < 6 && element; i++) {
+          const text = (element.innerText || "")
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase();
 
-  function fixShakeCards() {
-    const cards = document.querySelectorAll(".product-photo.fallback");
+          if (
+            text.includes("chocolate shake") &&
+            !text.includes("oreo chocolate shake") &&
+            !text.includes("vanilla shake")
+          ) {
+            return "chocolate";
+          }
 
-    cards.forEach(function (card, index) {
-      if (index > 1) return;
+          if (
+            text.includes("vanilla shake") &&
+            !text.includes("oreo vanilla shake") &&
+            !text.includes("chocolate shake")
+          ) {
+            return "vanilla";
+          }
 
-      const img = document.createElement("img");
-      img.src = new URL(photos[index], location.href).href;
-      img.alt = index === 0 ? "Chocolate Shake" : "Vanilla Shake";
-      img.style.cssText =
-        "width:100%;height:100%;object-fit:cover;display:block";
+          element = element.parentElement;
+        }
 
-      card.replaceChildren(img);
-      card.classList.remove("fallback");
-    });
-  }
+        return null;
+      }
 
-  fixShakeCards();
+      function fixShakeCards() {
+        document.querySelectorAll(".product-photo.fallback").forEach(function (card) {
+          const product = getProductName(card);
+          if (!product) return;
 
-  const root = document.getElementById("root");
-  if (root) {
-    new MutationObserver(fixShakeCards).observe(root, {
-      childList: true,
-      subtree: true
-    });
-  }
-})();
-</script>
+          if (card.dataset.photoFixed === product) return;
+
+          const img = document.createElement("img");
+          img.alt = product === "chocolate"
+            ? "Chocolate Shake"
+            : "Vanilla Shake";
+          img.src = new URL(imagePaths[product], location.href).href;
+          img.style.cssText =
+            "width:100%;height:100%;object-fit:cover;display:block";
+
+          card.replaceChildren(img);
+          card.classList.remove("fallback");
+          card.dataset.photoFixed = product;
+        });
+      }
+
+      fixShakeCards();
+
+      const root = document.getElementById("root");
+
+      if (root) {
+        new MutationObserver(fixShakeCards).observe(root, {
+          childList: true,
+          subtree: true
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
-
