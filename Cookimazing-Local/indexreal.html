@@ -220,5 +220,47 @@ if (
 })();
 </script>
 
+<script>
+(function () {
+  const photos = [
+    { name: "Chocolate Shake", file: "./Chocolate-Shake.jpg" },
+    { name: "Vanilla Shake", file: "./Vannila%20Shake.jpg" }
+  ];
+
+  function fixShakeCards() {
+    const cards = [
+      ...document.querySelectorAll(".product-photo.fallback")
+    ];
+
+    for (const photo of photos) {
+      const card = cards.find(el => {
+        const text = el.parentElement?.parentElement?.innerText || "";
+        return text.includes(photo.name);
+      });
+
+      if (!card || card.dataset.photoFixed === photo.name) continue;
+
+      const img = document.createElement("img");
+      img.alt = photo.name;
+      img.src = new URL(photo.file, location.href).href;
+      img.style.cssText =
+        "width:100%;height:100%;object-fit:cover;display:block";
+
+      card.replaceChildren(img);
+      card.classList.remove("fallback");
+      card.dataset.photoFixed = photo.name;
+    }
+  }
+
+  fixShakeCards();
+
+  new MutationObserver(fixShakeCards).observe(
+    document.getElementById("root"),
+    { childList: true, subtree: true }
+  );
+})();
+</script>
+</body>
+
 </body>
 </html>
