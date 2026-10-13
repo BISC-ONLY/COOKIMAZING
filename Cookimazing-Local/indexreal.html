@@ -92,6 +92,45 @@
     </div>
   </div>
 
+<script>
+(() => {
+  function fixShakeImages() {
+    document.querySelectorAll(".product-name").forEach(name => {
+      const product = name.textContent.trim().toLowerCase();
+
+      let image;
+      if (product === "chocolate shake") {
+        image = "./Chocolate-Shake.jpg";
+      } else if (product === "vanilla shake") {
+        image = "./Vannila%20Shake.jpg";
+      } else {
+        return;
+      }
+
+      const card = name.closest(".product-card") ||
+                   name.closest(".product-item") ||
+                   name.parentElement?.parentElement?.parentElement;
+
+      if (!card) return;
+
+      const img = card.querySelector("img");
+      if (img && !img.dataset.shakeFixed) {
+        img.src = image;
+        img.alt = name.textContent.trim();
+        img.dataset.shakeFixed = "true";
+      }
+    });
+  }
+
+  new MutationObserver(fixShakeImages).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+
+  fixShakeImages();
+})();
+</script>
+
 <script src="./assets/index-DXqvEoz6.js?v=4"></script>
 
   <script>
