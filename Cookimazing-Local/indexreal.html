@@ -261,5 +261,49 @@ if (vanilla) vanilla.image = "./Vannila%20Shake.jpg";
 })();
 </script>
 
+<script>
+(() => {
+  const images = [
+    { src: "./Chocolate-Shake.jpg", alt: "Chocolate Shake" },
+    { src: "./Vannila%20Shake.jpg", alt: "Vanilla Shake" }
+  ];
+
+  function fixShakeImages() {
+    const photos = [
+      ...document.querySelectorAll(".product-photo.fallback")
+    ];
+
+    if (photos.length !== 2) return;
+
+    photos.forEach((photo, i) => {
+      photo.replaceChildren();
+      photo.classList.remove("fallback");
+      photo.style.setProperty("background-image", "none", "important");
+      photo.style.setProperty("overflow", "hidden", "important");
+
+      const img = document.createElement("img");
+      img.src = new URL(images[i].src, location.href).href;
+      img.alt = images[i].alt;
+
+      img.style.cssText =
+        "display:block!important;width:100%!important;height:100%!important;min-height:180px;object-fit:contain!important;position:static!important;margin:0!important;";
+
+      photo.appendChild(img);
+    });
+
+    console.log("Cookimazing: Chocolate and Vanilla shake images fixed.");
+  }
+
+  const observer = new MutationObserver(fixShakeImages);
+
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+
+  fixShakeImages();
+})();
+</script>
+
 </body>
 </html>
