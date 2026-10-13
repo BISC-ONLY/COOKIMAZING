@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
   <title>COOKIMAZING</title>
   <meta name="description" content="COOKIMAZING — School Cookie Store." />
   <meta name="robots" content="index, follow" />
@@ -13,8 +14,9 @@
   <meta name="twitter:title" content="COOKIMAZING" />
   <meta name="twitter:description" content="COOKIMAZING — School Cookie Store." />
 
-  <link rel="icon" type="image/png" href="./favicon.png?v=3" />
-<link rel="shortcut icon" type="image/png" href="./favicon.png?v=3" />
+  <link rel="icon" type="image/jpeg" href="./favicon.jpeg?v=4" />
+  <link rel="shortcut icon" type="image/jpeg" href="./favicon.jpeg?v=4" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -53,10 +55,12 @@
         opacity: 0;
         transform: scale(0.8);
       }
+
       60% {
         opacity: 1;
         transform: scale(1.08);
       }
+
       100% {
         opacity: 1;
         transform: scale(1);
@@ -78,11 +82,26 @@
     .hero-cta {
       display: none !important;
     }
+
+    #startup-error {
+      display: none;
+      margin: 30px auto;
+      max-width: 700px;
+      padding: 20px;
+      font-family: Inter, sans-serif;
+      color: #b91c1c;
+      background: #fff;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
   </style>
 </head>
 
 <body>
   <div id="root"></div>
+  <div id="startup-error"></div>
 
   <div id="intro-screen">
     <div id="intro-text">
@@ -92,9 +111,39 @@
     </div>
   </div>
 
-  <!-- Keep this filename synchronized with the actual file in assets. -->
-  <script src="./assets/index-DXqvEoz6.js?v=6"></script>
+  <!-- Main Cookimazing application -->
+  <script>
+    (function () {
+      window.addEventListener("error", function (event) {
+        const filename = event.filename || "";
 
+        if (
+          filename.includes("index-DXqvEoz6.js") ||
+          (!filename && event.message)
+        ) {
+          const errorBox = document.getElementById("startup-error");
+
+          if (errorBox) {
+            errorBox.style.display = "block";
+            errorBox.textContent =
+              "Cookimazing encountered a JavaScript error.\n\n" +
+              (event.message || "The application could not start.") +
+              (filename ? "\nFile: " + filename : "") +
+              (event.lineno ? "\nLine: " + event.lineno : "");
+          }
+
+          console.error("Cookimazing startup error:", event.message, filename);
+        }
+      });
+    })();
+  </script>
+
+  <script
+    src="./assets/index-DXqvEoz6.js?v=7"
+    onerror="document.getElementById('startup-error').style.display='block'; document.getElementById('startup-error').textContent='Cookimazing could not load its JavaScript file. Check that assets/index-DXqvEoz6.js exists and that its filename matches.';">
+  </script>
+
+  <!-- Intro animation -->
   <script>
     (function () {
       const screen = document.getElementById("intro-screen");
@@ -113,6 +162,7 @@
         } else {
           setTimeout(function () {
             screen.classList.add("hide");
+
             setTimeout(function () {
               screen.style.display = "none";
             }, 850);
@@ -124,7 +174,7 @@
     })();
   </script>
 
-  <!-- Local API and Cloudflare forwarding -->
+  <!-- Local API and Cloudflare order forwarding -->
   <script>
     (function () {
       const appFetch = window.fetch.bind(window);
@@ -156,7 +206,11 @@
           (input instanceof Request ? input.method : "GET")
         ).toUpperCase();
 
-        if (location.protocol === "file:" && path === "/api/store/catalog" && requestMethod === "GET") {
+        if (
+          location.protocol === "file:" &&
+          path === "/api/store/catalog" &&
+          requestMethod === "GET"
+        ) {
           apiUrl.protocol = "http:";
           apiUrl.hostname = "localhost";
           apiUrl.port = "9999";
@@ -173,8 +227,13 @@
             item => item.id === "vanilla-shake"
           );
 
-          if (chocolate) chocolate.image = "./Chocolate-Shake.jpg";
-          if (vanilla) vanilla.image = "./Vannila%20Shake.jpg";
+          if (chocolate) {
+            chocolate.image = "./Chocolate-Shake.jpg";
+          }
+
+          if (vanilla) {
+            vanilla.image = "./Vannila%20Shake.jpg";
+          }
 
           return new Response(JSON.stringify(catalog), {
             status: catalogResponse.status,
@@ -184,7 +243,11 @@
           });
         }
 
-        if (location.protocol === "file:" && path === "/api/orders" && requestMethod === "POST") {
+        if (
+          location.protocol === "file:" &&
+          path === "/api/orders" &&
+          requestMethod === "POST"
+        ) {
           apiUrl.protocol = "http:";
           apiUrl.hostname = "localhost";
           apiUrl.port = "9999";
@@ -206,17 +269,26 @@
                   body: JSON.stringify(savedOrder)
                 }
               ).catch(error => {
-                console.error("Cloudflare order forwarding failed:", error);
+                console.error(
+                  "Cloudflare order forwarding failed:",
+                  error
+                );
               });
             }
           } catch (error) {
-            console.error("Could not forward the saved order:", error);
+            console.error(
+              "Could not forward the saved order:",
+              error
+            );
           }
 
           return localResponse;
         }
 
-        if (location.protocol === "file:" && path.startsWith("/api/")) {
+        if (
+          location.protocol === "file:" &&
+          path.startsWith("/api/")
+        ) {
           apiUrl.protocol = "http:";
           apiUrl.hostname = "localhost";
           apiUrl.port = "9999";
@@ -230,7 +302,7 @@
     })();
   </script>
 
-  <!-- Fix shake images without changing the catalog or checkout flow -->
+  <!-- Restore local shake images -->
   <script>
     (function () {
       const imagePaths = {
@@ -270,26 +342,37 @@
       }
 
       function fixShakeCards() {
-        document.querySelectorAll(".product-photo.fallback").forEach(function (card) {
-          const product = getProductName(card);
-          if (!product || card.dataset.photoFixed === product) return;
+        document
+          .querySelectorAll(".product-photo.fallback")
+          .forEach(function (card) {
+            const product = getProductName(card);
 
-          const img = document.createElement("img");
-          img.alt = product === "chocolate"
-            ? "Chocolate Shake"
-            : "Vanilla Shake";
-          img.src = new URL(imagePaths[product], location.href).href;
-          img.style.cssText =
-            "width:100%;height:100%;object-fit:cover;display:block";
+            if (!product || card.dataset.photoFixed === product) {
+              return;
+            }
 
-          img.onerror = function () {
-            console.error("Shake image failed to load:", img.src);
-          };
+            const img = document.createElement("img");
 
-          card.replaceChildren(img);
-          card.classList.remove("fallback");
-          card.dataset.photoFixed = product;
-        });
+            img.alt = product === "chocolate"
+              ? "Chocolate Shake"
+              : "Vanilla Shake";
+
+            img.src = new URL(
+              imagePaths[product],
+              location.href
+            ).href;
+
+            img.style.cssText =
+              "width:100%;height:100%;object-fit:cover;display:block";
+
+            img.onerror = function () {
+              console.error("Shake image failed to load:", img.src);
+            };
+
+            card.replaceChildren(img);
+            card.classList.remove("fallback");
+            card.dataset.photoFixed = product;
+          });
       }
 
       fixShakeCards();
@@ -305,30 +388,27 @@
     })();
   </script>
 
-  <!-- Diagnose cookie-image loading without interfering with checkout -->
+  <!-- Diagnose cookie image errors -->
   <script>
     (function () {
       document.addEventListener("error", function (event) {
         const img = event.target;
 
-        if (!(img instanceof HTMLImageElement)) return;
+        if (!(img instanceof HTMLImageElement)) {
+          return;
+        }
 
         const src = img.getAttribute("src") || "";
 
         if (/mm-cookie\.png|smores-cookie\.png/i.test(src)) {
-          console.error(
-            "Cookimazing cookie image failed to load.",
-            {
-              image: src,
-              resolvedURL: img.src,
-              pageURL: location.href,
-              hint: "Check the image URL and whether the image exists at that location."
-            }
-          );
+          console.error("Cookimazing cookie image failed to load:", {
+            image: src,
+            resolvedURL: img.src,
+            pageURL: location.href
+          });
         }
       }, true);
     })();
   </script>
 </body>
 </html>
-```
