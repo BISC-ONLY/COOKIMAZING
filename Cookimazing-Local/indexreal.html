@@ -92,37 +92,65 @@
     </div>
   </div>
 
+
 <script>
 (() => {
+  const images = {
+    "chocolate shake": "./Chocolate-Shake.jpg",
+    "vanilla shake": "./Vannila%20Shake.jpg"
+  };
+
   function fixShakeImages() {
-    document.querySelectorAll(".product-name").forEach(name => {
-      const product = name.textContent.trim().toLowerCase();
+    document.querySelectorAll(".product-name").forEach(heading => {
+      const name = heading.textContent.trim().toLowerCase();
+      const src = images[name];
 
-      let image;
-      if (product === "chocolate shake") {
-        image = "./Chocolate-Shake.jpg";
-      } else if (product === "vanilla shake") {
-        image = "./Vannila%20Shake.jpg";
-      } else {
-        return;
+      // Ignore every product except the two actual shakes.
+      if (!src) return;
+
+      let card = heading;
+      let photo = null;
+
+      for (let i = 0; i < 10 && card; i++, card = card.parentElement) {
+        const names = card.querySelectorAll(".product-name");
+        const photos = card.querySelectorAll(".product-photo");
+
+        if (names.length === 1 && photos.length === 1) {
+          photo = photos[0];
+          break;
+        }
       }
 
-      const card = name.closest(".product-card") ||
-                   name.closest(".product-item") ||
-                   name.parentElement?.parentElement?.parentElement;
+      if (!photo) return;
 
-      if (!card) return;
+      const url = new URL(src, location.href).href;
+      const existing = photo.querySelector("img");
 
-      const img = card.querySelector("img");
-      if (img && !img.dataset.shakeFixed) {
-        img.src = image;
-        img.alt = name.textContent.trim();
-        img.dataset.shakeFixed = "true";
-      }
+      if (
+        photo.dataset.cookimazingShakeSrc === url &&
+        existing?.src === url
+      ) return;
+
+      // Replace the illustration only inside the matching shake card.
+      photo.replaceChildren();
+      photo.classList.remove("fallback");
+      photo.style.setProperty("background-image", "none", "important");
+      photo.style.setProperty("overflow", "hidden", "important");
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = heading.textContent.trim();
+      img.style.cssText =
+        "display:block!important;width:100%!important;height:100%!important;min-height:180px;object-fit:contain!important;position:static!important;margin:0!important";
+
+      photo.appendChild(img);
+      photo.dataset.cookimazingShakeSrc = url;
     });
   }
 
-  new MutationObserver(fixShakeImages).observe(document.documentElement, {
+  const observer = new MutationObserver(fixShakeImages);
+
+  observer.observe(document.documentElement, {
     childList: true,
     subtree: true
   });
@@ -130,6 +158,7 @@
   fixShakeImages();
 })();
 </script>
+
 
 <script src="./assets/index-DXqvEoz6.js?v=4"></script>
 
