@@ -305,5 +305,122 @@ if (vanilla) vanilla.image = "./Vannila%20Shake.jpg";
 })();
 </script>
 
+<script>
+(() => {
+  const years = ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6"];
+
+  function installYearPicker() {
+    if (document.querySelector('[data-cookimazing-year-picker="true"]')) return;
+
+    const controls = [...document.querySelectorAll(
+      'input:not([type="hidden"]):not([type="submit"]), textarea, select'
+    )].filter(el =>
+      el.getClientRects().length &&
+      getComputedStyle(el).visibility !== "hidden" &&
+      !el.disabled
+    );
+
+    const candidates = controls.map(el => {
+      const labels = [...(el.labels || [])]
+        .map(label => label.innerText || label.textContent || "")
+        .join(" ");
+
+      const metadata = [
+        el.name, el.id, el.placeholder,
+        el.getAttribute("aria-label"), labels
+      ].join(" ");
+
+      let score = /\byear\b/i.test(metadata) ? 100 : 0;
+      let parent = el.parentElement;
+
+      for (let depth = 0; depth < 5 && parent; depth++, parent = parent.parentElement) {
+        const text = (parent.innerText || "").replace(/\s+/g, " ").trim();
+        if (text.length < 180 &&
+            parent.querySelectorAll("input, textarea, select").length <= 3 &&
+            /\b(year|grade)\b/i.test(text)) {
+          score = Math.max(score, 30 - depth * 3);
+        }
+      }
+
+      return { el, score };
+    }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
+
+    if (!candidates.length ||
+        (candidates.length > 1 && candidates[0].score === candidates[1].score)) {
+      return;
+    }
+
+    const original = candidates[0].el;
+    const matchYear = value => {
+      const match = String(value || "").trim().match(/^(?:year\s*)?([1-6])$/i);
+      return match ? `Year ${match[1]}` : "";
+    };
+
+    if (original.tagName === "SELECT") {
+      const current = matchYear(original.value);
+      original.replaceChildren();
+
+      const placeholder = new Option("Select your year", "");
+      placeholder.disabled = true;
+      original.add(placeholder);
+      years.forEach(year => original.add(new Option(year, year)));
+
+      original.value = current;
+      original.dataset.cookimazingYearPicker = "true";
+      return;
+    }
+
+    const picker = document.createElement("select");
+    picker.className = original.className;
+    picker.setAttribute("aria-label", "Select your year");
+
+    const style = getComputedStyle(original);
+    picker.style.cssText =
+      `box-sizing:border-box;width:${style.width};max-width:100%;` +
+      `font:${style.font};color:${style.color};` +
+      `padding:${style.padding};border:${style.border};` +
+      `border-radius:${style.borderRadius};`;
+
+    picker.add(new Option("Select your year", ""));
+    years.forEach(year => picker.add(new Option(year, year)));
+
+    picker.value = matchYear(original.value);
+    picker.required = original.required;
+    picker.dataset.cookimazingYearPicker = "true";
+
+    original.required = false;
+    original.tabIndex = -1;
+    original.setAttribute("aria-hidden", "true");
+    original.style.cssText +=
+      ";position:absolute!important;width:1px!important;height:1px!important;" +
+      "padding:0!important;margin:-1px!important;overflow:hidden!important;" +
+      "clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;";
+
+    original.parentElement.insertBefore(picker, original);
+    original.addEventListener("focus", () => picker.focus());
+
+    picker.addEventListener("change", () => {
+      const setter = Object.getOwnPropertyDescriptor(
+        Object.getPrototypeOf(original), "value"
+      )?.set;
+
+      if (setter) setter.call(original, picker.value);
+      else original.value = picker.value;
+
+      original.dispatchEvent(new Event("input", { bubbles: true }));
+      original.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  }
+
+  const observer = new MutationObserver(installYearPicker);
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+
+  installYearPicker();
+})();
+</script>
+
 </body>
 </html>
