@@ -109,10 +109,19 @@
         if (!heading || !photo) return;
 
         const name = heading.textContent.trim().toLowerCase();
+
+        // Strictly ignore cookies, boxes, trios, and non-shake products
+        if (
+          name.includes("cookie") ||
+          name.includes("box") ||
+          name.includes("trio")
+        ) {
+          return;
+        }
+
         const path = imagePaths[name];
 
-        // Leave Big Box, Trio Cookies, Oreo shakes and all other
-        // products untouched.
+        // Leave all other products untouched.
         if (!path) return;
 
         const url = new URL(path, location.href).href;
@@ -154,7 +163,7 @@
 
     fixShakeImages();
   })();
-  </script>
+</script>
 
   <script src="./assets/index-DXqvEoz6.js?v=4"></script>
 
