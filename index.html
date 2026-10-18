@@ -91,23 +91,15 @@
     </div>
   </div>
 
-  <!-- FIXED ALL PRODUCT IMAGES (COOKIES & SHAKES) -->
+  <!-- FIXED SHAKE IMAGES -->
   <script>
   (() => {
-    const imageMap = {
+    const imagePaths = {
       "chocolate shake": "./Cookimazing-Local/Chocolate-Shake.jpg",
-      "vanilla shake": "./Cookimazing-Local/Vannila%20Shake.jpg",
-      "m&m": "./Cookimazing-Local/mm-cookie.png",
-      "m & m": "./Cookimazing-Local/mm-cookie.png",
-      "mm": "./Cookimazing-Local/mm-cookie.png",
-      "s'mores": "./Cookimazing-Local/smores-cookie.png",
-      "smores": "./Cookimazing-Local/smores-cookie.png",
-      "oreo": "./Cookimazing-Local/oreo-cookie.png",
-      "kinder": "./Cookimazing-Local/kinder-cookie.png",
-      "biscoff": "./Cookimazing-Local/biscoff-cookie.png"
+      "vanilla shake": "./Cookimazing-Local/Vannila%20Shake.jpg"
     };
 
-    function fixImages() {
+    function fixShakeImages() {
       document.querySelectorAll(".product-card").forEach(card => {
         const heading = card.querySelector(".product-name");
         const photo = card.querySelector(".product-photo");
@@ -115,18 +107,19 @@
         if (!heading || !photo) return;
 
         const name = heading.textContent.trim().toLowerCase();
-        let matchedPath = null;
 
-        for (const [key, path] of Object.entries(imageMap)) {
-          if (name.includes(key)) {
-            matchedPath = path;
-            break;
-          }
+        if (
+          name.includes("cookie") ||
+          name.includes("box") ||
+          name.includes("trio")
+        ) {
+          return;
         }
 
-        if (!matchedPath) return;
+        const path = imagePaths[name];
+        if (!path) return;
 
-        const url = new URL(matchedPath, location.href).href;
+        const url = new URL(path, location.href).href;
         const existingImage = photo.querySelector("img");
 
         if (
@@ -152,13 +145,13 @@
       });
     }
 
-    const observer = new MutationObserver(fixImages);
+    const observer = new MutationObserver(fixShakeImages);
     observer.observe(document.documentElement, {
       childList: true,
       subtree: true
     });
 
-    fixImages();
+    fixShakeImages();
   })();
   </script>
 
@@ -227,32 +220,16 @@
           const catalogResponse = await appFetch(apiUrl.href, options);
           const catalog = await catalogResponse.clone().json();
 
-          // Fix image paths for all catalog categories (shakes, cookies, etc.)
-          const fixCatalogItem = (item) => {
-            if (!item || !item.image) return;
-            const lowerId = (item.id || "").toLowerCase();
-            const lowerName = (item.name || "").toLowerCase();
+          const chocolate = catalog.shakes?.find(
+            item => item.id === "chocolate-shake"
+          );
 
-            if (lowerId.includes("chocolate") || lowerName.includes("chocolate shake")) {
-              item.image = "./Cookimazing-Local/Chocolate-Shake.jpg";
-            } else if (lowerId.includes("vanilla") || lowerName.includes("vanilla shake")) {
-              item.image = "./Cookimazing-Local/Vannila%20Shake.jpg";
-            } else if (lowerId.includes("mm") || lowerName.includes("m&m")) {
-              item.image = "./Cookimazing-Local/mm-cookie.png";
-            } else if (lowerId.includes("smores") || lowerName.includes("s'mores")) {
-              item.image = "./Cookimazing-Local/smores-cookie.png";
-            } else if (lowerId.includes("oreo") || lowerName.includes("oreo")) {
-              item.image = "./Cookimazing-Local/oreo-cookie.png";
-            } else if (lowerId.includes("kinder") || lowerName.includes("kinder")) {
-              item.image = "./Cookimazing-Local/kinder-cookie.png";
-            } else if (lowerId.includes("biscoff") || lowerName.includes("biscoff")) {
-              item.image = "./Cookimazing-Local/biscoff-cookie.png";
-            }
-          };
+          const vanilla = catalog.shakes?.find(
+            item => item.id === "vanilla-shake"
+          );
 
-          if (catalog.shakes && Array.isArray(catalog.shakes)) catalog.shakes.forEach(fixCatalogItem);
-          if (catalog.cookies && Array.isArray(catalog.cookies)) catalog.cookies.forEach(fixCatalogItem);
-          if (catalog.items && Array.isArray(catalog.items)) catalog.items.forEach(fixCatalogItem);
+          if (chocolate) chocolate.image = "./Cookimazing-Local/Chocolate-Shake.jpg";
+          if (vanilla) vanilla.image = "./Cookimazing-Local/Vannila%20Shake.jpg";
 
           return new Response(JSON.stringify(catalog), {
             status: catalogResponse.status,
