@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,12 +52,10 @@
         opacity: 0;
         transform: scale(0.8);
       }
-
       60% {
         opacity: 1;
         transform: scale(1.08);
       }
-
       100% {
         opacity: 1;
         transform: scale(1);
@@ -98,9 +95,10 @@
   <script>
   (() => {
     const imagePaths = {
-  "chocolate shake": "./Cookimazing-Local/Chocolate-Shake.jpg",
-  "vanilla shake": "./Cookimazing-Local/Vannila%20Shake.jpg"
-};
+      "chocolate shake": "./Cookimazing-Local/Chocolate-Shake.jpg",
+      "vanilla shake": "./Cookimazing-Local/Vannila%20Shake.jpg"
+    };
+
     function fixShakeImages() {
       document.querySelectorAll(".product-card").forEach(card => {
         const heading = card.querySelector(".product-name");
@@ -119,7 +117,6 @@
         }
 
         const path = imagePaths[name];
-
         if (!path) return;
 
         const url = new URL(path, location.href).href;
@@ -142,16 +139,13 @@
         const img = document.createElement("img");
         img.src = url;
         img.alt = heading.textContent.trim();
-
-        img.style.cssText =
-          "display:block!important;width:100%!important;height:100%!important;min-height:180px;object-fit:contain!important;position:static!important;margin:0!important";
+        img.style.cssText = "display:block!important;width:100%!important;height:100%!important;min-height:180px;object-fit:contain!important;position:static!important;margin:0!important";
 
         photo.appendChild(img);
       });
     }
 
     const observer = new MutationObserver(fixShakeImages);
-
     observer.observe(document.documentElement, {
       childList: true,
       subtree: true
@@ -226,11 +220,11 @@
           const catalogResponse = await appFetch(apiUrl.href, options);
           const catalog = await catalogResponse.clone().json();
 
-          const chocolate = catalog.shakes.find(
+          const chocolate = catalog.shakes?.find(
             item => item.id === "chocolate-shake"
           );
 
-          const vanilla = catalog.shakes.find(
+          const vanilla = catalog.shakes?.find(
             item => item.id === "vanilla-shake"
           );
 
@@ -259,8 +253,7 @@
 
           try {
             if (localResponse.ok) {
-              const savedOrder =
-                await localResponse.clone().json();
+              const savedOrder = await localResponse.clone().json();
 
               appFetch(
                 "https://cookimazing-orders.robloxprogamer200.workers.dev/",
