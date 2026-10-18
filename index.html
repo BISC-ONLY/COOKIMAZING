@@ -13,7 +13,8 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="COOKIMAZING" />
   <meta name="twitter:description" content="COOKIMAZING — best cookies." />
-  <link rel="icon" type="image/jpeg" href="./favicon.jpeg" />
+
+  <link rel="icon" type="image/jpeg" href="./Cookimazing-Local/favicon.jpeg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -93,12 +94,12 @@
     </div>
   </div>
 
-  <!-- FIXED SHAKE IMAGES: MATCH BY PRODUCT NAME, NEVER BY POSITION -->
+  <!-- FIXED SHAKE IMAGES -->
   <script>
   (() => {
     const imagePaths = {
-      "chocolate shake": "./Chocolate-Shake.jpg",
-      "vanilla shake": "./Vannila%20Shake.jpg"
+      "chocolate shake": "./Cookimazing-Local/Chocolate-Shake.jpg",
+      "vanilla shake": "./Cookimazing-Local/Vannila%20Shake.jpg"
     };
 
     function fixShakeImages() {
@@ -110,7 +111,6 @@
 
         const name = heading.textContent.trim().toLowerCase();
 
-        // Strictly ignore cookies, boxes, trios, and non-shake products
         if (
           name.includes("cookie") ||
           name.includes("box") ||
@@ -121,13 +121,11 @@
 
         const path = imagePaths[name];
 
-        // Leave all other products untouched.
         if (!path) return;
 
         const url = new URL(path, location.href).href;
         const existingImage = photo.querySelector("img");
 
-        // The correct image is already installed.
         if (
           existingImage &&
           existingImage.src === url &&
@@ -137,7 +135,6 @@
           return;
         }
 
-        // Replace only the photo area of the matching shake.
         photo.replaceChildren();
         photo.classList.remove("fallback");
         photo.style.setProperty("background-image", "none", "important");
@@ -163,9 +160,10 @@
 
     fixShakeImages();
   })();
-</script>
+  </script>
 
-  <script src="./assets/index-DXqvEoz6.js?v=4"></script>
+  <!-- MAIN WEBSITE JAVASCRIPT -->
+  <script src="./Cookimazing-Local/assets/index-DXqvEoz6.js?v=4"></script>
 
   <!-- INTRO ANIMATION -->
   <script>
@@ -237,8 +235,8 @@
             item => item.id === "vanilla-shake"
           );
 
-          if (chocolate) chocolate.image = "./Chocolate-Shake.jpg";
-          if (vanilla) vanilla.image = "./Vannila%20Shake.jpg";
+          if (chocolate) chocolate.image = "./Cookimazing-Local/Chocolate-Shake.jpg";
+          if (vanilla) vanilla.image = "./Cookimazing-Local/Vannila%20Shake.jpg";
 
           return new Response(JSON.stringify(catalog), {
             status: catalogResponse.status,
