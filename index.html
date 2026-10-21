@@ -12,10 +12,12 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="COOKIMAZING" />
   <meta name="twitter:description" content="COOKIMAZING — best cookies." />
+  
+  <link rel="icon" type="image/jpeg" href="/favicon.jpeg">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
-<link rel="icon" type="image/jpeg" href="/favicon.jpeg">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -208,56 +210,58 @@
           options?.method ||
           (input instanceof Request ? input.method : "GET")
         ).toUpperCase();
-// FIX COOKIE AND OREO SHAKE IMAGES ON GITHUB PAGES
-if (
-  apiUrl.pathname.endsWith("/api/store/catalog") &&
-  requestMethod === "GET" &&
-  location.protocol !== "file:"
-) {
-  const catalogResponse = await appFetch(input, options);
-  const catalog = await catalogResponse.clone().json();
+        
+        // FIX COOKIE AND OREO SHAKE IMAGES ON GITHUB PAGES
+        if (
+          apiUrl.pathname.endsWith("/api/store/catalog") &&
+          requestMethod === "GET" &&
+          location.protocol !== "file:"
+        ) {
+          const catalogResponse = await appFetch(input, options);
+          const catalog = await catalogResponse.clone().json();
 
-  const imagesFolder = new URL(
-    "./Cookimazing-Local/images/",
-    location.href
-  );
+          const imagesFolder = new URL(
+            "./Cookimazing-Local/images/",
+            location.href
+          );
 
-  const fixImagePath = image => {
-    if (
-      typeof image !== "string" ||
-      !image ||
-      image.startsWith("data:") ||
-      /^https?:\/\//i.test(image)
-    ) {
-      return image;
-    }
+          const fixImagePath = image => {
+            if (
+              typeof image !== "string" ||
+              !image ||
+              image.startsWith("data:") ||
+              /^https?:\/\//i.test(image)
+            ) {
+              return image;
+            }
 
-    const cleanPath = image.replace(/^(?:\.\/|\/)+/, "");
+            const cleanPath = image.replace(/^(?:\.\/|\/)+/, "");
 
-    if (!cleanPath.startsWith("images/")) {
-      return image;
-    }
+            if (!cleanPath.startsWith("images/")) {
+              return image;
+            }
 
-    return new URL(
-      cleanPath.slice("images/".length),
-      imagesFolder
-    ).href;
-  };
+            return new URL(
+              cleanPath.slice("images/".length),
+              imagesFolder
+            ).href;
+          };
 
-  for (const item of [
-    ...(catalog.cookies || []),
-    ...(catalog.shakes || [])
-  ]) {
-    item.image = fixImagePath(item.image);
-  }
+          for (const item of [
+            ...(catalog.cookies || []),
+            ...(catalog.shakes || [])
+          ]) {
+            item.image = fixImagePath(item.image);
+          }
 
-  return new Response(JSON.stringify(catalog), {
-    status: catalogResponse.status,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-}
+          return new Response(JSON.stringify(catalog), {
+            status: catalogResponse.status,
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+        }
+
         if (
           path === "/api/store/catalog" &&
           requestMethod === "GET" &&
